@@ -1,0 +1,23 @@
+replicaCount: 2
+
+image:
+  repository: fastyr
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8000
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+postgresql:
+  enabled: true
+  postgresqlUsername: fastyr
+  postgresqlDatabase: fastyr 

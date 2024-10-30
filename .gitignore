@@ -1,0 +1,47 @@
+# Virtual Environment
+/venv
+.env
+
+# Database
+alembic.ini
+
+# Python
+__init__.py
+__pycache__/
+*.py[cod]
+*.so
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+bin/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+.mypy_cache/
+
+# Logs
+*.log
+
+# Cache
+.cache/
