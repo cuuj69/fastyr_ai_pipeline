@@ -3,4 +3,8 @@ requires = ["setuptools>=42"]
 build-backend = "setuptools.build_meta"
 
 [tool.pytest.ini_options]
-pythonpath = ["src"]
+asyncio_mode = "strict"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --cov=fastyr --cov-report=term-missing"

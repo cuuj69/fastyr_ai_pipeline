@@ -33,6 +33,7 @@ setup(
         "asyncpg>=0.25.0",
         "sqlalchemy[asyncio]>=1.4.0",
         "aiosqlite>=0.17.0",
+        "aiofiles>=23.2.1",
     ],
     extras_require={
         "dev": [

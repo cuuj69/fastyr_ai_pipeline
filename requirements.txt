@@ -17,6 +17,7 @@ uvicorn[standard]>=0.15.0
 gunicorn>=20.1.0
 psycopg2-binary>=2.9.1
 aiosqlite>=0.17.0
+aiofiles>=23.2.1
 
 # Testing dependencies
 pytest
