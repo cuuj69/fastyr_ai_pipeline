@@ -12,10 +12,6 @@ from fastyr.services.interfaces.llm_provider import LLMProvider
 
 load_dotenv()
 
-# Create a dummy LLM provider that just returns the input
-class DummyLLMProvider(LLMProvider):
-    async def generate_response(self, prompt: str, options: Dict[str, Any] = None) -> str:
-        return prompt
 
 async def basic_usage_example():
     """Basic usage example of the AI pipeline."""
@@ -24,16 +20,20 @@ async def basic_usage_example():
         storage = LocalStorageProvider(base_path="storage/audio")
         pipeline = PipelineService(
             stt_provider=DeepgramProvider(api_key=os.getenv('DEEPGRAM_API_KEY')),
-            llm_provider=DummyLLMProvider(),  # Use dummy provider
+            llm_provider=OpenAIProvider(
+                api_key=os.getenv('OPENAI_API_KEY'),
+                model="gpt-4",  # or gpt-3.5-turbo 
+                organization_id=os.getenv('OPENAI_ORG_ID')  # optional
+            ),
             tts_provider=ElevenLabsProvider(
                 api_key=os.getenv('ELEVENLABS_API_KEY'),
-                voice_id="21m00Tcm4TlvDq8ikWAM"  # Default voice ID
+                voice_id="21m00Tcm4TlvDq8ikWAM" # this can be substituted for another voice from the voice library on elevenlabs.io
             ),
             storage_provider=storage
         )
 
         # Process audio
-        with open("/Users/admin/Documents/fastyr_ai_pipeline/test.wav", "rb") as f:
+        with open("/Users/admin/Documents/fastyr_ai_pipeline/docs/test_output.wav", "rb") as f:
             audio_data = f.read()
         
         request = AudioProcessRequest(
@@ -41,9 +41,14 @@ async def basic_usage_example():
             request_id="example-1",
             user_id="user-1",
             options={
-                "language": "en",
-                "quality": "high",
-                # "llm_model": "gpt-3.5-turbo"
+                "llm_options": {
+                    "temperature": 0.7,
+                    "max_tokens": 2000,
+                    "model": "gpt-4",
+                    "top_p": 1.0,
+                    "frequency_penalty": 0.0,
+                    "presence_penalty": 0.0
+                }
             }
         )
         
@@ -65,15 +70,43 @@ async def test_elevenlabs():
         api_key=os.getenv('ELEVENLABS_API_KEY'),
         voice_id="21m00Tcm4TlvDq8ikWAM"
     )
-    audio_data = await tts_provider.synthesize("This was built by William Jefferson Mensah")
+    audio_data = await tts_provider.synthesize("Who is hercules and can you tell me some fascinating things about him")
     
     # Save the audio to test it
     with open("test_output.wav", "wb") as f:
         f.write(audio_data)
     print("Audio saved to test_output.wav")
 
+async def test_openai():
+    llm_provider = OpenAIProvider(
+        api_key=os.getenv('OPENAI_API_KEY'),
+        model="gp-3.5-turbo",
+        organization_id=os.getenv('OPENAI_API_ORGANIZATION_ID'),
+        project_id=os.getenv('OPENAI_API_PROJECT_ID')
+    )
+
+    # Test with basic prompt
+    prompt = "What is artificial intelligence in one sentence?"
+
+    try:
+        response = await llm_provider.generate_response(
+            prompt,
+            options={
+                "temperature": 0.7,
+                "max_tokens": 100,
+                "model": "gpt-3.5-turbo",
+                "top_p": 1.0,
+                "frequency_penalty": 0.0,
+                "presence_penalty": 0.0
+            }
+        )
+        print(f"Prompt: {prompt}")
+        print(f"Response: {response}")
+    except Exception as e:
+        print(f"Error testing OpenAI: {str(e)}")
+
 if __name__ == "__main__":
-    #asyncio.run(basic_usage_example())
-    asyncio.run(test_deepgram())
-    
+    asyncio.run(basic_usage_example())
+    #asyncio.run(test_deepgram())
     #asyncio.run(test_elevenlabs())
+    #asyncio.run(test_openai())

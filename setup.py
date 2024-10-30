@@ -34,6 +34,7 @@ setup(
         "sqlalchemy[asyncio]>=1.4.0",
         "aiosqlite>=0.17.0",
         "aiofiles>=23.2.1",
+        "PyJWT>=2.0.0",
     ],
     extras_require={
         "dev": [
@@ -44,6 +45,7 @@ setup(
             "coverage>=7.2.0",
             "httpx>=0.24.0",
             "aiohttp>=3.8.0",
+            "pytest-env>=1.0.0",
         ]
     },
     python_requires=">=3.7",

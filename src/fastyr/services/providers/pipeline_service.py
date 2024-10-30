@@ -44,8 +44,13 @@ class PipelineService:
                 request.audio_data,
                 request.options.get("stt_options")
             )
-            
-            llm_response = transcript  # Just pass through the transcript for now
+
+            # 2. Language Model Processing
+            llm_response = await self._retry_with_backoff(
+                self.llm_provider.generate_response,
+                transcript,
+                request.options.get("llm_options")
+            )
             
             # 3. Text to Speech
             audio_output = await self._retry_with_backoff(
@@ -62,7 +67,7 @@ class PipelineService:
                 status="completed",
                 audio_url=audio_url,
                 request_id=request.request_id,
-                created_at=datetime.datetime.utcnow()  # Use UTC timestamp
+                created_at=datetime.datetime.utcnow()
             )
             
         except ProviderError as e:

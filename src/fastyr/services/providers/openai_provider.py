@@ -7,7 +7,7 @@ import aiohttp
 import os
 
 load_dotenv()
-OPENAI_URL = os.getenv("OPENAI_URL", "https://api.openai.com/v1")
+OPENAI_URL = os.getenv("OPENAI_URL")
 
 class OpenAIProvider(LLMProvider):
     """OpenAI API provider implementation"""

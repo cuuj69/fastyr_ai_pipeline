@@ -1,6 +1,6 @@
 import pytest
 import asyncio
-from fastyr.domain.models.requests import AudioProcessRequest
+from fastyr.core.contracts.request_dtos import AudioProcessRequest
 from fastyr.services.providers.pipeline_service import PipelineService
 from fastyr.infrastructure.repositories.sqlalchemy_repository import SQLAlchemyRepository
 

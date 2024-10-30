@@ -158,5 +158,7 @@ William Jefferson Mensah
 For support, please open an issue on the GitHub repository or contact the author directly.
 
 
-
+To run the project:
+# From the project root
+uvicorn src.fastyr.api.main:app --reload --host 0.0.0.0 --port 8000
 
