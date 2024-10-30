@@ -95,9 +95,11 @@ Create your own provider by implementing the relevant interface:
 from fastyr.services.interfaces.stt_provider import STTProvider
 class CustomSTTProvider(STTProvider):
 async def transcribe(self, audio_data: bytes, options: Dict[str, Any] = None) -> str:
-# Your implementation here
+# `from fastyr.services.interfaces.stt_provider import STTProvider
+class CustomSTTProvider(STTProvider):
+async def transcribe(self, audio_data: bytes, options: Dict[str, Any] = None) -> str: 
 pass
-
+`
 ### Error Handling
 
 The library provides built-in error handling:
