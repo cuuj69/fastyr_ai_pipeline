@@ -41,6 +41,8 @@ setup(
             "pytest-asyncio>=0.21.0",
             "pytest-mock>=3.10.0",
             "coverage>=7.2.0",
+            "httpx>=0.24.0",
+            "aiohttp>=3.8.0",
         ]
     },
     python_requires=">=3.7",
