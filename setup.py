@@ -34,6 +34,15 @@ setup(
         "sqlalchemy[asyncio]>=1.4.0",
         "aiosqlite>=0.17.0",
     ],
+    extras_require={
+        "dev": [
+            "pytest>=7.0.0",
+            "pytest-cov>=4.0.0",
+            "pytest-asyncio>=0.21.0",
+            "pytest-mock>=3.10.0",
+            "coverage>=7.2.0",
+        ]
+    },
     python_requires=">=3.7",
     classifiers=[
         "Programming Language :: Python :: 3",
