@@ -30,8 +30,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install -e .
+        pip install -e .[dev]
     
     - name: Run tests and coverage
       run: |
@@ -44,4 +43,4 @@ jobs:
       if: github.ref == 'refs/heads/main'
       run: |
         docker build -t fastyr:${{ github.sha }} .
-        docker push fastyr:${{ github.sha }} 
+        docker push fastyr:${{ github.sha }}
