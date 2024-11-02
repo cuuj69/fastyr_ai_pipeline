@@ -5,8 +5,10 @@ import os
 from typing import AsyncGenerator
 from fastapi import Depends
 
+# Default to SQLite for testing if DATABASE_URL is not set
 DATABASE_URL = os.getenv(
-    "DATABASE_URL"
+    "DATABASE_URL",
+    "sqlite+aiosqlite:///./test.db"
 )
 
 engine = create_async_engine(DATABASE_URL, echo=True)
