@@ -10,19 +10,22 @@ class TestProviders:
     @pytest.fixture
     def mock_session(self):
         mock = AsyncMock()
-        mock.post.return_value.__aenter__.return_value.status = 200
-        mock.post.return_value.__aenter__.return_value.json.return_value = {
+        mock_response = AsyncMock()
+        mock_response.status = 200
+        mock_response.json.return_value = {
             "results": {
                 "channels": [{"alternatives": [{"transcript": "test text"}]}]
             }
         }
+        mock_context = AsyncMock()
+        mock_context.__aenter__.return_value = mock_response
+        mock.post.return_value = mock_context
         return mock
 
     async def test_deepgram_transcribe_success(self, mock_session):
-        provider = DeepgramProvider("test_key")
-        provider.base_url = "https://api.deepgram.com/v1"
-        
         with patch('aiohttp.ClientSession', return_value=mock_session):
+            provider = DeepgramProvider("test_key")
+            provider.base_url = "https://api.deepgram.com/v1"
             result = await provider.transcribe(b"test audio")
             assert result == "test text"
 
