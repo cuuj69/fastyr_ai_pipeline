@@ -4,6 +4,7 @@ from fastyr.api.main import app
 from fastyr.core.di.container import Container
 from fastyr.core.contracts.request_dtos import AudioProcessRequest
 from fastyr.infrastructure.database.connection import get_db_url
+import base64
 
 @pytest.fixture
 def client():
@@ -20,7 +21,7 @@ def client():
 async def test_pipeline_integration(client):
     """Test complete pipeline flow."""
     # Arrange
-    test_audio = "test audio data"
+    test_audio = base64.b64encode(b"test audio data").decode()  # Convert bytes to base64 string
     request = AudioProcessRequest(
         audio_data=test_audio,
         request_id="test-123",

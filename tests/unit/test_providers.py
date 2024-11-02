@@ -12,9 +12,7 @@ class TestProviders:
         mock = AsyncMock()
         mock.post.return_value.__aenter__.return_value.status = 200
         mock.post.return_value.__aenter__.return_value.json.return_value = {
-            "results": {
-                "channels": [{"alternatives": [{"transcript": "test text"}]}]
-            }
+            "choices": [{"message": {"content": "test response"}}]
         }
         return mock
 
@@ -25,19 +23,15 @@ class TestProviders:
         result = await provider.transcribe(b"test audio")
         assert result == "test text"
 
-    async def test_openai_generate_response_success(self, mock_session):
+    async def test_openai_generate_response_success(self, mock_session, monkeypatch):
         # Arrange
         provider = OpenAIProvider("test_key")
-        mock_response = AsyncMock()
-        mock_response.status = 200
-        mock_response.json.return_value = {
-            "choices": [{"message": {"content": "test response"}}]
-        }
-        mock_session.return_value.__aenter__.return_value.post.return_value.__aenter__.return_value = mock_response
-
+        provider.base_url = "https://api.openai.com/v1"  # Set base URL
+        monkeypatch.setattr("aiohttp.ClientSession", lambda: mock_session)
+        
         # Act
         result = await provider.generate_response("test prompt")
-
+        
         # Assert
         assert result == "test response"
 

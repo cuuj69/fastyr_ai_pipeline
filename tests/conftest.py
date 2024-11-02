@@ -14,12 +14,17 @@ def client():
 
 
 @pytest.fixture
-async def db_session() -> AsyncGenerator[AsyncSession, None]:
+async def db_session():
+    """Create test database session."""
     engine = create_async_engine("sqlite+aiosqlite:///./test.db")
-    async_session = sessionmaker(engine, class_=AsyncSession)
+    async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+    
     async with async_session() as session:
         try:
             yield session
+            await session.commit()
+        except Exception:
             await session.rollback()
+            raise
         finally:
             await session.close() 
