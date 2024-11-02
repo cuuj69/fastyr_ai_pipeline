@@ -13,3 +13,6 @@ markers = [
     "integration: marks tests as integration tests",
     "e2e: marks tests as end-to-end tests"
 ]
+pythonpath = [
+    "src"
+]

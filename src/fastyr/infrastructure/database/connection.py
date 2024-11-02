@@ -36,3 +36,10 @@ async def get_db_dependency():
 
 def create_session_factory():
     return async_session
+
+def get_db_url() -> str:
+    """Get database URL from environment or return default test URL"""
+    return os.getenv(
+        "DATABASE_URL",
+        "sqlite+aiosqlite:///./test.db"
+    )

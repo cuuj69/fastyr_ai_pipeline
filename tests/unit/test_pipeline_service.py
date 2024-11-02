@@ -1,8 +1,8 @@
 import pytest
 from unittest.mock import Mock, AsyncMock
-from ...src.fastyr.services.providers.pipeline_service import PipelineService
-from ...src.fastyr.core.exceptions import ValidationError
-from ...src.fastyr.core.contracts.request_dtos import AudioProcessRequest
+from fastyr.services.providers.pipeline_service import PipelineService
+from fastyr.core.exceptions import ValidationError
+from fastyr.core.contracts.request_dtos import AudioProcessRequest
 
 @pytest.mark.asyncio
 async def test_pipeline_service_validation():

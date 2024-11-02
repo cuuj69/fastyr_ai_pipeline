@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel
 from typing import Dict, Any, Optional
 
@@ -6,3 +7,12 @@ class AudioProcessRequest(BaseModel):
     request_id: str
     user_id: str
     options: Dict[str, Any] = {} 
+
+class AudioProcess(BaseModel):
+    id: int = Optional[None]
+    status: str
+    audio_url: str
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True 
