@@ -2,7 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import AsyncMock
 from fastyr.api.main import app
-from fastyr.domain.models.requests import AudioProcessRequest
+from fastyr.core.contracts.request_dtos import AudioProcessRequest
 from fastyr.core.exceptions import ValidationError
 
 @pytest.mark.integration

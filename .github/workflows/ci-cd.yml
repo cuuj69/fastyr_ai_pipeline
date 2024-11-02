@@ -43,6 +43,10 @@ jobs:
         pip install PyJWT>=2.0.0
         pip install aiosqlite
     
+    - name: Set PYTHONPATH
+      run: |
+        echo "PYTHONPATH=$PYTHONPATH:$(pwd)/src" >> $GITHUB_ENV
+    
     - name: Run tests and coverage
       run: |
         pytest tests/ --cov=fastyr --cov-report=xml

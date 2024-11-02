@@ -33,3 +33,6 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 async def get_db_dependency():
     async with async_session() as session:
         yield session
+
+def create_session_factory():
+    return async_session

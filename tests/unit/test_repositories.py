@@ -1,6 +1,6 @@
 import pytest
 from datetime import datetime
-from fastyr.domain.models.audio_process import AudioProcess
+from fastyr.core.contracts.request_dtos import AudioProcess
 from fastyr.infrastructure.repositories.sqlalchemy_repository import SQLAlchemyRepository
 
 @pytest.mark.asyncio
