@@ -17,7 +17,8 @@ class ValidationError(FastyrException):
     def __init__(self, message: str):
         super().__init__(message, ErrorCodes.INVALID_INPUT)
 
-class ProviderError(FastyrException):
-    """Raised when a provider operation fails."""
-    def __init__(self, message: str):
-        super().__init__(message, ErrorCodes.PROVIDER_ERROR)
+class ProviderError(Exception):
+    def __init__(self, message: str, code: str = None):
+        super().__init__(message)
+        self.message = message
+        self.code = code

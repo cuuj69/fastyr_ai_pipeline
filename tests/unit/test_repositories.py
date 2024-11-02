@@ -15,4 +15,8 @@ async def test_repository_crud_operations(db_session):
     
     # Act - Create
     created = await repo.add(test_entity)
+    await db_session.commit()
+    
+    # Assert
     assert created.id is not None
+    assert created.status == "pending"

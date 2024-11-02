@@ -23,7 +23,7 @@ class TestGraphQLIntegration:
         variables = {"id": 1}
         
         # Act
-        response = await self.client.post(
+        response = self.client.post(
             "/graphql",
             json={"query": query, "variables": variables},
             headers={"Authorization": "Bearer test-token"}

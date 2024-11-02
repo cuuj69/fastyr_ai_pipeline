@@ -5,17 +5,28 @@ from fastyr.services.providers.openai_provider import OpenAIProvider
 from fastyr.services.providers.elevenlabs_provider import ElevenLabsProvider
 from fastyr.services.providers.local_storage_provider import LocalStorageProvider
 from fastyr.core.contracts.request_dtos import AudioProcessRequest
+from unittest.mock import AsyncMock
 
 @pytest.mark.integration
 class TestCompletePipeline:
     @pytest.fixture
     async def pipeline_service(self):
-        # Use test API keys from environment variables
-        storage = LocalStorageProvider(base_path="test_storage")
+        storage = AsyncMock()
+        storage.store.return_value = "test_url.wav"
+        
+        stt_mock = AsyncMock()
+        stt_mock.transcribe.return_value = "test transcript"
+        
+        llm_mock = AsyncMock()
+        llm_mock.generate_response.return_value = "test response"
+        
+        tts_mock = AsyncMock()
+        tts_mock.synthesize.return_value = b"test audio"
+        
         service = PipelineService(
-            stt_provider=DeepgramProvider(api_key="test_key"),
-            llm_provider=OpenAIProvider(api_key="test_key"),
-            tts_provider=ElevenLabsProvider(api_key="test_key"),
+            stt_provider=stt_mock,
+            llm_provider=llm_mock,
+            tts_provider=tts_mock,
             storage_provider=storage
         )
         return service

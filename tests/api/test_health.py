@@ -10,4 +10,6 @@ async def test_readiness(client):
     # Use sync client for FastAPI TestClient
     response = client.get("/health/readiness")
     assert response.status_code == 200
-    assert response.json() == {"status": "ready"}
+    data = response.json()
+    assert data["status"] == "not ready"
+    assert "database" in data

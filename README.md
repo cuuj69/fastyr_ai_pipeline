@@ -164,3 +164,31 @@ To run the project:
 # From the project root
 uvicorn src.fastyr.api.main:app --reload 
 
+To run the tests:
+# Run a single test file
+
+pytest tests/unit/test_repositories.py -v
+
+# Run a specific test function
+pytest tests/unit/test_repositories.py::test_repository_crud_operations -v
+
+# Run with detailed logs
+pytest tests/unit/test_repositories.py -v --log--cli-level=DEBUG
+
+# Run all tests with coverage
+pytest tests/ --cov=fastyr --cov-report=term-missing -v
+
+# Run with specific markers
+pytest -m "unit" -v  # Only unit tests
+pytest -m "integration" -v  # Only integration tests
+
+# Run with SQL logging
+pytest tests/unit/test_repositories.py -v --log-cli-level=DEBUG --log-cli-format="%(message)s"
+
+# Install exact versions
+pip install -r requirements-dev.txt
+
+# Run with the same Python version
+python3.9 -m pytest tests/ --cov=fastyr --cov-report=xml
+
+
