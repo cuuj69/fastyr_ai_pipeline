@@ -9,7 +9,7 @@ class AudioProcessRequest(BaseModel):
     options: Dict[str, Any] = {} 
 
 class AudioProcess(BaseModel):
-    id: int | None = None
+    id: Optional[int] = None
     status: str
     audio_url: str
     created_at: datetime
