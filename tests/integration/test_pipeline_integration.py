@@ -20,7 +20,7 @@ def client():
 async def test_pipeline_integration(client):
     """Test complete pipeline flow."""
     # Arrange
-    test_audio = b"test audio data"
+    test_audio = "test audio data"
     request = AudioProcessRequest(
         audio_data=test_audio,
         request_id="test-123",
@@ -30,7 +30,7 @@ async def test_pipeline_integration(client):
     # Act
     response = client.post(
         "/api/v1/pipeline/process",
-        json=request.dict()
+        json=request.model_dump()
     )
     
     # Assert

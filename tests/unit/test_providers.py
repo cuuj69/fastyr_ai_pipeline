@@ -9,25 +9,20 @@ from fastyr.core.exceptions import ProviderError
 class TestProviders:
     @pytest.fixture
     def mock_session(self):
-        with patch('aiohttp.ClientSession') as mock:
-            yield mock
-
-    async def test_deepgram_transcribe_success(self, mock_session):
-        # Arrange
-        provider = DeepgramProvider("test_key")
-        mock_response = AsyncMock()
-        mock_response.status = 200
-        mock_response.json.return_value = {
+        mock = AsyncMock()
+        mock.post.return_value.__aenter__.return_value.status = 200
+        mock.post.return_value.__aenter__.return_value.json.return_value = {
             "results": {
                 "channels": [{"alternatives": [{"transcript": "test text"}]}]
             }
         }
-        mock_session.return_value.__aenter__.return_value.post.return_value.__aenter__.return_value = mock_response
+        return mock
 
-        # Act
+    async def test_deepgram_transcribe_success(self, mock_session, monkeypatch):
+        # Mock aiohttp.ClientSession
+        monkeypatch.setattr("aiohttp.ClientSession", lambda: mock_session)
+        provider = DeepgramProvider("test_key")
         result = await provider.transcribe(b"test audio")
-
-        # Assert
         assert result == "test text"
 
     async def test_openai_generate_response_success(self, mock_session):
