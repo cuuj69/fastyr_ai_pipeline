@@ -54,6 +54,27 @@ jobs:
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2
       
+    - name: Prepare Docker build
+      if: github.ref == 'refs/heads/main'
+      run: |
+        # Create docker-entrypoint.sh
+        echo '#!/bin/bash
+        set -e
+        
+        # Initialize alembic if needed
+        if [ ! -f alembic.ini ]; then
+            alembic init migrations
+        fi
+        
+        # Run migrations
+        alembic upgrade head
+        
+        # Start the application
+        exec uvicorn fastyr.api.main:app --host 0.0.0.0 --port 8000' > docker-entrypoint.sh
+        
+        # Create alembic.ini
+        alembic init migrations
+    
     - name: Build and push Docker image
       if: github.ref == 'refs/heads/main'
       run: |

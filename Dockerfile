@@ -11,22 +11,16 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code and migrations
+# Copy application code
 COPY . .
-COPY alembic.ini .
 RUN pip install -e .
 
-# Create migrations directory if it doesn't exist
+# Create migrations directory
 RUN mkdir -p migrations
 
-# Initialize alembic if not already initialized
-RUN if [ ! -f alembic.ini ]; then alembic init migrations; fi
-
-# Run migrations at container startup instead of build time
-EXPOSE 8000
-
-# Use an entrypoint script to run migrations and start the app
-COPY docker-entrypoint.sh .
+# Make entrypoint script executable
 RUN chmod +x docker-entrypoint.sh
+
+EXPOSE 8000
 
 ENTRYPOINT ["./docker-entrypoint.sh"]
