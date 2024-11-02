@@ -28,7 +28,7 @@ from fastyr.services.providers.local_storage_provider import LocalStorageProvide
 
 Initialize providers
 
-torage = LocalStorageProvider(base_path="storage/audio")
+storage = LocalStorageProvider(base_path="storage/audio")
 pipeline = PipelineService(
 stt_provider=DeepgramProvider(api_key=os.getenv('DEEPGRAM_API_KEY')),
 llm_provider=OpenAIProvider(api_key=os.getenv('OPENAI_API_KEY')),
@@ -162,5 +162,5 @@ For support, please open an issue on the GitHub repository or contact the author
 
 To run the project:
 # From the project root
-uvicorn src.fastyr.api.main:app --reload --host 0.0.0.0 --port 8000
+uvicorn src.fastyr.api.main:app --reload 
 
