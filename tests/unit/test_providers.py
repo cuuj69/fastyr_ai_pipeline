@@ -12,16 +12,19 @@ class TestProviders:
         mock = AsyncMock()
         mock.post.return_value.__aenter__.return_value.status = 200
         mock.post.return_value.__aenter__.return_value.json.return_value = {
-            "choices": [{"message": {"content": "test response"}}]
+            "results": {
+                "channels": [{"alternatives": [{"transcript": "test text"}]}]
+            }
         }
         return mock
 
-    async def test_deepgram_transcribe_success(self, mock_session, monkeypatch):
-        # Mock aiohttp.ClientSession
-        monkeypatch.setattr("aiohttp.ClientSession", lambda: mock_session)
+    async def test_deepgram_transcribe_success(self, mock_session):
         provider = DeepgramProvider("test_key")
-        result = await provider.transcribe(b"test audio")
-        assert result == "test text"
+        provider.base_url = "https://api.deepgram.com/v1"
+        
+        with patch('aiohttp.ClientSession', return_value=mock_session):
+            result = await provider.transcribe(b"test audio")
+            assert result == "test text"
 
     async def test_openai_generate_response_success(self, mock_session, monkeypatch):
         # Arrange

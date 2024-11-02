@@ -21,20 +21,20 @@ def client():
 async def test_pipeline_integration(client):
     """Test complete pipeline flow."""
     # Arrange
-    test_audio = base64.b64encode(b"test audio data").decode()  # Convert bytes to base64 string
-    request = AudioProcessRequest(
-        audio_data=test_audio,
-        request_id="test-123",
-        user_id="user-123"
-    )
+    audio_data = base64.b64encode(b"test audio data").decode('utf-8')
+    request = {
+        "audio_data": audio_data,
+        "request_id": "test-123",
+        "user_id": "user-123"
+    }
     
     # Act
     response = client.post(
         "/api/v1/pipeline/process",
-        json=request.model_dump()
+        json=request
     )
     
     # Assert
     assert response.status_code == 200
-    result = response.json()
-    assert result["status"] == "completed" 
+    data = response.json()
+    assert data["status"] == "completed" 
