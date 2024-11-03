@@ -70,7 +70,7 @@ async def test_elevenlabs():
         api_key=os.getenv('ELEVENLABS_API_KEY'),
         voice_id="21m00Tcm4TlvDq8ikWAM"
     )
-    audio_data = await tts_provider.synthesize("Who is hercules and can you tell me some fascinating things about him")
+    audio_data = await tts_provider.synthesize("Who is sisyphus")
     
     # Save the audio to test it
     with open("test_output.wav", "wb") as f:
