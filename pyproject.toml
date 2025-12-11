@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=42", "pytest-cov>=2.10.1", "coverage>=5.1"]
+requires = ["setuptools>=42", "wheel", "pytest-cov>=2.10.1", "coverage>=5.1"]
 build-backend = "setuptools.build_meta"
 
 [tool.pytest.ini_options]

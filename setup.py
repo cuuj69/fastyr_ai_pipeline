@@ -1,14 +1,21 @@
 from setuptools import setup, find_packages
+from pathlib import Path
+
+# Read README for long description
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 
 setup(
-    name="fastyr_ai_pipeline",
+    name="fastyr-ai-pipeline",
     version="0.1.0",
     author="William Jefferson Mensah",
     author_email="mensahjefferson69@gmail.com",
     description="A flexible AI pipeline for STT, LLM, and TTS",
-    long_description=open("README.md").read(),
+    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/cuuj69/fastyr",
+    license="MIT",
+    license_files=[],  # Prevent automatic license file detection to avoid metadata issues
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     install_requires=[
@@ -46,8 +53,18 @@ setup(
     },
     python_requires=">=3.7",
     classifiers=[
-        "Programming Language :: Python :: 3",
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Topic :: Scientific/Engineering :: Artificial Intelligence",
         "License :: OSI Approved :: MIT License",
-        "Operating Systems :: OS Independent",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Operating System :: OS Independent",
+        "Framework :: FastAPI",
     ],
 )
