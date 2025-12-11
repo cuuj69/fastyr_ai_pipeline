@@ -6,7 +6,6 @@
 alembic.ini
 
 # Python
-__init__.py
 __pycache__/
 *.py[cod]
 *.so
@@ -39,9 +38,19 @@ htmlcov/
 .tox/
 .hypothesis/
 .mypy_cache/
+test.db
+test_storage/
+docs/storage/
+docs/test_output.wav
+*.wav
+*.mp3
 
 # Logs
 *.log
 
 # Cache
 .cache/
+
+# Storage (test artifacts)
+/storage/*
+!/storage/.gitkeep

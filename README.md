@@ -1,142 +1,90 @@
-
 # Fastyr AI Pipeline
 
 A flexible and extensible Python library for building AI-powered conversational pipelines. Fastyr provides a clean interface between Speech-to-Text (STT), Language Model (LLM), and Text-to-Speech (TTS) services.
 
 ## Features
 
-- 🔄 Seamless integration of STT, LLM, and TTS services
-- 🔌 Easy provider switching with consistent interfaces
-- 🚀 Async/await support for optimal performance
-- 🛡️ Built-in error handling and retries
-- 📦 No dependency on provider-specific client libraries
-- 💾 Flexible storage backend support
-- ✅ Comprehensive test coverage
+- Seamless integration of STT, LLM, and TTS services
+- Easy provider switching with consistent interfaces
+- Async/await support for optimal performance
+- Built-in error handling and retries
+- Flexible storage backend support
 
 ## Installation
 
+```bash
 pip install fastyr-ai-pipeline
+```
 
 ## Quick Start
 
-
+```python
+import os
 from fastyr.services.providers.pipeline_service import PipelineService
 from fastyr.services.providers.deepgram_provider import DeepgramProvider
 from fastyr.services.providers.openai_provider import OpenAIProvider
 from fastyr.services.providers.elevenlabs_provider import ElevenLabsProvider
 from fastyr.services.providers.local_storage_provider import LocalStorageProvider
 
-Initialize providers
-
+# Initialize providers
 storage = LocalStorageProvider(base_path="storage/audio")
 pipeline = PipelineService(
-stt_provider=DeepgramProvider(api_key=os.getenv('DEEPGRAM_API_KEY')),
-llm_provider=OpenAIProvider(api_key=os.getenv('OPENAI_API_KEY')),
-tts_provider=ElevenLabsProvider(
-api_key=os.getenv('ELEVENLABS_API_KEY'),
-voice_id="your-voice-id"
-),
-storage_provider=storage
+    stt_provider=DeepgramProvider(api_key=os.getenv('DEEPGRAM_API_KEY')),
+    llm_provider=OpenAIProvider(api_key=os.getenv('OPENAI_API_KEY')),
+    tts_provider=ElevenLabsProvider(
+        api_key=os.getenv('ELEVENLABS_API_KEY'),
+        voice_id="your-voice-id"
+    ),
+    storage_provider=storage
 )
+
+# Process audio through the pipeline
 result = await pipeline.process(request)
 print(f"Processed audio available at: {result.audio_url}")
+```
 
-
-## Architecture
-
-### Provider Interfaces
+## Provider Interfaces
 
 The library defines three core interfaces:
 
-1. **STTProvider**: Speech-to-Text interface
-   - `transcribe(audio_data: bytes, options: Dict) -> str`
-
-2. **LLMProvider**: Language Model interface
-   - `generate_response(prompt: str, options: Dict) -> str`
-
-3. **TTSProvider**: Text-to-Speech interface
-   - `synthesize(text: str, options: Dict) -> bytes`
+- **STTProvider**: `transcribe(audio_data: bytes, options: Dict) -> str`
+- **LLMProvider**: `generate_response(prompt: str, options: Dict) -> str`
+- **TTSProvider**: `synthesize(text: str, options: Dict) -> bytes`
 
 ### Implemented Providers
 
-1. **Deepgram** (STT)
-   - High-accuracy speech recognition
-   - Supports multiple languages
-   - Configurable models
-
-2. **OpenAI** (LLM)
-   - GPT-3.5/4 integration
-   - Customizable prompts
-   - Temperature and other parameter controls
-
-3. **ElevenLabs** (TTS)
-   - High-quality voice synthesis
-   - Multiple voice options
-   - Adjustable speech parameters
+- **Deepgram** (STT): High-accuracy speech recognition with multi-language support
+- **OpenAI** (LLM): GPT-3.5/4 integration with customizable prompts
+- **ElevenLabs** (TTS): High-quality voice synthesis with multiple voice options
 
 ## Configuration
 
-Create a `.env` file in your project root:
+Set environment variables for your API keys:
 
+```env
 DEEPGRAM_API_KEY=your_deepgram_key
-DEEPGRAM_URL=https://api.deepgram.com/v1
 OPENAI_API_KEY=your_openai_key
-OPENAI_URL=https://api.openai.com/v1
 ELEVENLABS_API_KEY=your_elevenlabs_key
-ELEVENLABS_URL=https://api.elevenlabs.io/v1
+```
 
+## Custom Providers
 
+Implement your own provider by extending the relevant interface:
 
-## Advanced Usage
-
-### Custom Provider Implementation
-
-Create your own provider by implementing the relevant interface:
+```python
 from fastyr.services.interfaces.stt_provider import STTProvider
+from typing import Dict, Any
+
 class CustomSTTProvider(STTProvider):
-async def transcribe(self, audio_data: bytes, options: Dict[str, Any] = None) -> str:
-# `from fastyr.services.interfaces.stt_provider import STTProvider
-class CustomSTTProvider(STTProvider):
-async def transcribe(self, audio_data: bytes, options: Dict[str, Any] = None) -> str: 
-pass
-`
-### Error Handling
+    async def transcribe(self, audio_data: bytes, options: Dict[str, Any] = None) -> str:
+        # Your implementation
+        pass
+```
 
-The library provides built-in error handling:
-python
-try:
-result = await pipeline.process(request)
-except ProviderError as e:
-print(f"Provider error: {e}")
-except ValidationError as e:
-print(f"Validation error: {e}")
+## Requirements
 
-
-### FastAPI Integration
-python
-from fastapi import FastAPI, Depends
-from fastyr.api.controllers.pipeline_controller import router as pipeline_router
-app = FastAPI()
-app.include_router(pipeline_router)
-
-
-## Testing
-
-Run the test suite:
-
-Run specific test categories:
-pytest tests/unit/
-pytest tests/integration/
-pytest tests/e2e/
-
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+- Python 3.7+
+- See `setup.py` for dependencies
 
 ## License
 
@@ -144,51 +92,4 @@ MIT License - see LICENSE file for details
 
 ## Author
 
-William Jefferson Mensah
-- Email: mensahjefferson69@gmail.com
-- GitHub: [@cuuj69](https://github.com/cuuj69)
-
-## Requirements
-
-- Python ≥ 3.7
-- FastAPI ≥ 0.68.0
-- SQLAlchemy ≥ 1.4.0
-- Other dependencies listed in setup.py
-
-## Support
-
-For support, please open an issue on the GitHub repository or contact the author directly.
-
-
-To run the project:
-# From the project root
-uvicorn src.fastyr.api.main:app --reload 
-
-To run the tests:
-# Run a single test file
-
-pytest tests/unit/test_repositories.py -v
-
-# Run a specific test function
-pytest tests/unit/test_repositories.py::test_repository_crud_operations -v
-
-# Run with detailed logs
-pytest tests/unit/test_repositories.py -v --log--cli-level=DEBUG
-
-# Run all tests with coverage
-pytest tests/ --cov=fastyr --cov-report=term-missing -v
-
-# Run with specific markers
-pytest -m "unit" -v  # Only unit tests
-pytest -m "integration" -v  # Only integration tests
-
-# Run with SQL logging
-pytest tests/unit/test_repositories.py -v --log-cli-level=DEBUG --log-cli-format="%(message)s"
-
-# Install exact versions
-pip install -r requirements-dev.txt
-
-# Run with the same Python version
-python3.9 -m pytest tests/ --cov=fastyr --cov-report=xml
-
-
+William Jefferson Mensah - [GitHub](https://github.com/cuuj69)
